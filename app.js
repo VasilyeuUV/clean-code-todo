@@ -39,11 +39,11 @@ const initialTasks = [
  * @param {Object} [properties] Assigned to the element as is.
  * @returns {HTMLElement}
  */
-const createElement = function (tagName, className, properties = {}) {
+function createElement(tagName, className, properties = {}) {
   const element = document.createElement(tagName);
   if (className) element.className = className;
   return Object.assign(element, properties);
-};
+}
 
 /**
  * Builds a task item.
@@ -51,7 +51,7 @@ const createElement = function (tagName, className, properties = {}) {
  * @param {string} taskText
  * @returns {HTMLLIElement}
  */
-const createTaskItem = function (taskText) {
+function createTaskItem(taskText) {
   const deleteButton = createElement('button', 'task-item__delete-button', {
     type: 'button',
     ariaLabel: 'Delete task',
@@ -78,14 +78,14 @@ const createTaskItem = function (taskText) {
     deleteButton,
   );
   return taskItem;
-};
+}
 
 /**
  * Switches a task between viewing and editing: the text is copied between the
  * label and the edit field, and the button caption between "Edit" and "Save".
  * @param {HTMLLIElement} taskItem
  */
-const toggleEditMode = function (taskItem) {
+function toggleEditMode(taskItem) {
   const label = taskItem.querySelector('.task-item__label');
   const editInput = taskItem.querySelector('.task-item__edit-input');
   const editButton = taskItem.querySelector('.task-item__edit-button');
@@ -98,62 +98,62 @@ const toggleEditMode = function (taskItem) {
   }
   editButton.textContent = isEditing ? editCaption : saveCaption;
   taskItem.classList.toggle('task-item--editing');
-};
+}
 
 /**
  * Puts the task into the completed list when its checkbox is checked and into
  * the todo list otherwise.
  * @param {HTMLLIElement} taskItem
  */
-const placeTask = function (taskItem) {
+function placeTask(taskItem) {
   const checkbox = taskItem.querySelector('.task-item__checkbox');
   const targetList = checkbox.checked ? completedList : todoList;
   targetList.appendChild(taskItem);
-};
+}
 
 /**
  * Handles clicks on the edit and delete buttons of any task in a list.
  * @param {MouseEvent} event
  */
-const handleListClick = function (event) {
+function handleListClick(event) {
   const taskItem = event.target.closest('.task-item');
   if (event.target.closest('.task-item__edit-button')) {
     toggleEditMode(taskItem);
   } else if (event.target.closest('.task-item__delete-button')) {
     taskItem.remove();
   }
-};
+}
 
 /**
  * Moves a task to the matching list when its checkbox is toggled.
  * @param {Event} event
  */
-const handleListChange = function (event) {
+function handleListChange(event) {
   if (event.target.matches('.task-item__checkbox')) {
     placeTask(event.target.closest('.task-item'));
   }
-};
+}
 
 /**
  * Creates a task and shows it in the matching list and state.
  * @param {Task} task
  */
-const renderTask = function ({ text, isCompleted = false, isEditing = false }) {
+function renderTask({ text, isCompleted = false, isEditing = false }) {
   const taskItem = createTaskItem(text);
   taskItem.querySelector('.task-item__checkbox').checked = isCompleted;
   placeTask(taskItem);
   if (isEditing) toggleEditMode(taskItem);
-};
+}
 
 /**
  * Adds a task with the typed text to the todo list. Empty text is ignored.
  */
-const addTask = function () {
+function addTask() {
   if (!newTaskInput.value) return;
 
   renderTask({ text: newTaskInput.value });
   newTaskInput.value = '';
-};
+}
 
 addButton.addEventListener('click', addTask);
 [todoList, completedList].forEach((list) => {
