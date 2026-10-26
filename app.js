@@ -84,6 +84,7 @@ const toggleTaskCompletion = function () {
 
 /**
  * Attaches the checkbox, edit and delete handlers to a task item.
+ * Call it once per item: a repeated call would add the handlers again.
  * @param {HTMLLIElement} taskItem
  */
 const bindTaskEvents = function (taskItem) {
@@ -91,9 +92,9 @@ const bindTaskEvents = function (taskItem) {
   const editButton = taskItem.querySelector('.task-item__edit-button');
   const deleteButton = taskItem.querySelector('.task-item__delete-button');
 
-  checkbox.onchange = toggleTaskCompletion;
-  editButton.onclick = toggleEditMode;
-  deleteButton.onclick = deleteTask;
+  checkbox.addEventListener('change', toggleTaskCompletion);
+  editButton.addEventListener('click', toggleEditMode);
+  deleteButton.addEventListener('click', deleteTask);
 };
 
 /**
@@ -108,5 +109,5 @@ const addTask = function () {
   newTaskInput.value = '';
 };
 
-addButton.onclick = addTask;
+addButton.addEventListener('click', addTask);
 [...todoList.children, ...completedList.children].forEach(bindTaskEvents);
