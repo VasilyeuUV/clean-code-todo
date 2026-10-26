@@ -83,6 +83,8 @@ function createTaskItem(taskText) {
 /**
  * Switches a task between viewing and editing: the text is copied between the
  * label and the edit field, and the button caption between "Edit" and "Save".
+ * Saving is refused, and the task stays in edit mode, when the field is empty
+ * or holds only spaces; the saved text is trimmed.
  * @param {HTMLLIElement} taskItem
  */
 function toggleEditMode(taskItem) {
@@ -92,7 +94,10 @@ function toggleEditMode(taskItem) {
   const isEditing = taskItem.classList.contains('task-item--editing');
 
   if (isEditing) {
-    label.textContent = editInput.value;
+    const text = editInput.value.trim();
+    if (!text) return;
+
+    label.textContent = text;
   } else {
     editInput.value = label.textContent;
   }
@@ -146,12 +151,14 @@ function renderTask({ text, isCompleted = false, isEditing = false }) {
 }
 
 /**
- * Adds a task with the typed text to the todo list. Empty text is ignored.
+ * Adds a task with the typed text to the todo list. The text is trimmed;
+ * empty text and text made of spaces only are ignored.
  */
 function addTask() {
-  if (!newTaskInput.value) return;
+  const text = newTaskInput.value.trim();
+  if (!text) return;
 
-  renderTask({ text: newTaskInput.value });
+  renderTask({ text });
   newTaskInput.value = '';
 }
 
