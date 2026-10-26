@@ -1,47 +1,8 @@
-/* Basic Style */
+/* Base */
 body {
   background-color: #f8f8f8;
   color: #333;
   font-family: Lato, sans-serif;
-}
-
-.page-header {
-  width: 500px;
-  margin: 0 auto;
-  display: block;
-  text-align: right;
-}
-
-.page-header__image {
-  width: 100%;
-}
-
-.page-header__link {
-  font-family: fantasy, cursive;
-}
-
-@media (max-width: 768px) {
-  .page-header {
-    text-align: center;
-  }
-}
-
-.todo-app {
-  display: block;
-  width: 500px;
-  margin: 0 auto 0;
-}
-
-.add-task__input,
-.task-item__label,
-.task-item__edit-input {
-  width: 56%;
-  display: inline-block;
-  flex-grow: 1;
-}
-
-.add-task__row {
-  display: flex;
 }
 
 ul {
@@ -73,7 +34,6 @@ button:hover {
   color: #3a3a3a;
 }
 
-/* Heading */
 h2,
 label[for='new-task'] {
   color: #333;
@@ -102,21 +62,76 @@ input[type='text']:focus {
   color: #333;
 }
 
-/* New Task */
+/* Shared: task text fields */
+.add-task__input,
+.task-item__label,
+.task-item__edit-input {
+  width: 56%;
+  display: inline-block;
+  flex-grow: 1;
+}
+
+/* Utilities: hidden visually, still available to screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Block: page-header */
+.page-header {
+  width: 500px;
+  margin: 0 auto;
+  display: block;
+  text-align: right;
+}
+
+.page-header__image {
+  width: 100%;
+}
+
+.page-header__link {
+  font-family: fantasy, cursive;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    text-align: center;
+  }
+}
+
+/* Block: todo-app */
+.todo-app {
+  display: block;
+  width: 500px;
+  margin: 0 auto 0;
+}
+
+/* Block: add-task */
+.add-task {
+  margin: 16px 0;
+}
+
 label[for='new-task'] {
   display: block;
   margin: 0 0 20px;
 }
 
-.add-task {
-  margin: 16px 0;
+.add-task__row {
+  display: flex;
 }
 
 input#new-task {
   width: 318px;
 }
 
-/* Task list */
+/* Block: task-item */
 li {
   overflow: hidden;
   padding: 20px 0;
@@ -146,6 +161,10 @@ li > input[type='text'] {
   width: 226px;
 }
 
+ul li input[type='text'] {
+  display: none;
+}
+
 button.task-item__delete-button img {
   height: 2em;
   transform: rotateZ(45deg);
@@ -156,17 +175,7 @@ button.task-item__delete-button img:hover {
   transform: rotateZ(0);
 }
 
-/* Completed */
-ul#completed-list label {
-  text-decoration: line-through;
-  color: #888;
-}
-
-/* Edit Task */
-ul li input[type='text'] {
-  display: none;
-}
-
+/* Block: task-item, modifier: editing */
 ul li.task-item--editing input[type='text'] {
   display: inline-block;
   width: 224px;
@@ -176,15 +185,8 @@ ul li.task-item--editing label {
   display: none;
 }
 
-/* Hidden visually, still available to screen readers */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+/* Block: task-item, context: completed list */
+ul#completed-list label {
+  text-decoration: line-through;
+  color: #888;
 }
