@@ -10,6 +10,13 @@ const todoList = document.getElementById('todo-list');
 /** @type {HTMLUListElement} Tasks that are done. */
 const completedList = document.getElementById('completed-list');
 
+/** @type {{text: string, isCompleted?: boolean, isEditing?: boolean}[]} Tasks shown on page load. */
+const initialTasks = [
+  { text: 'Pay Bills' },
+  { text: 'Go Shopping', isEditing: true },
+  { text: 'See the Doctor', isCompleted: true },
+];
+
 /**
  * Creates an element with the given class and extra properties.
  * @param {string} tagName
@@ -31,7 +38,9 @@ const createElement = function (tagName, className, properties = {}) {
  */
 const createTaskItem = function (taskText) {
   const deleteButton = createElement('button', 'task-item__delete-button');
-  deleteButton.appendChild(createElement('img', '', { src: './remove.svg' }));
+  deleteButton.appendChild(
+    createElement('img', '', { src: './remove.svg', alt: '' }),
+  );
 
   const taskItem = createElement('li', 'task-item');
   taskItem.append(
@@ -47,12 +56,12 @@ const createTaskItem = function (taskText) {
 /**
  * Switches a task between viewing and editing: the text is copied between the
  * label and the edit field, and the button caption between "Edit" and "Save".
- * @this {HTMLButtonElement} Edit button of the task.
+ * @param {HTMLLIElement} taskItem
  */
-const toggleEditMode = function () {
-  const taskItem = this.parentNode;
+const toggleEditMode = function (taskItem) {
   const label = taskItem.querySelector('.task-item__label');
   const editInput = taskItem.querySelector('.task-item__edit-input');
+  const editButton = taskItem.querySelector('.task-item__edit-button');
   const isEditing = taskItem.classList.contains('task-item--editing');
 
   if (isEditing) {
@@ -60,26 +69,19 @@ const toggleEditMode = function () {
   } else {
     editInput.value = label.innerText;
   }
-  this.innerText = isEditing ? 'Edit' : 'Save';
+  editButton.innerText = isEditing ? 'Edit' : 'Save';
   taskItem.classList.toggle('task-item--editing');
 };
 
 /**
- * Removes the task from its list.
- * @this {HTMLButtonElement} Delete button of the task.
+ * Puts the task into the completed list when its checkbox is checked and into
+ * the todo list otherwise.
+ * @param {HTMLLIElement} taskItem
  */
-const deleteTask = function () {
-  this.parentNode.remove();
-};
-
-/**
- * Moves the task to the completed list when its checkbox is checked and back
- * to the todo list when it is unchecked.
- * @this {HTMLInputElement} Checkbox of the task.
- */
-const toggleTaskCompletion = function () {
-  const targetList = this.checked ? completedList : todoList;
-  targetList.appendChild(this.parentNode);
+const placeTask = function (taskItem) {
+  const checkbox = taskItem.querySelector('.task-item__checkbox');
+  const targetList = checkbox.checked ? completedList : todoList;
+  targetList.appendChild(taskItem);
 };
 
 /**
@@ -92,9 +94,21 @@ const bindTaskEvents = function (taskItem) {
   const editButton = taskItem.querySelector('.task-item__edit-button');
   const deleteButton = taskItem.querySelector('.task-item__delete-button');
 
-  checkbox.addEventListener('change', toggleTaskCompletion);
-  editButton.addEventListener('click', toggleEditMode);
-  deleteButton.addEventListener('click', deleteTask);
+  checkbox.addEventListener('change', () => placeTask(taskItem));
+  editButton.addEventListener('click', () => toggleEditMode(taskItem));
+  deleteButton.addEventListener('click', () => taskItem.remove());
+};
+
+/**
+ * Creates a task, wires it up and shows it in the matching list and state.
+ * @param {{text: string, isCompleted?: boolean, isEditing?: boolean}} task
+ */
+const renderTask = function ({ text, isCompleted = false, isEditing = false }) {
+  const taskItem = createTaskItem(text);
+  bindTaskEvents(taskItem);
+  taskItem.querySelector('.task-item__checkbox').checked = isCompleted;
+  placeTask(taskItem);
+  if (isEditing) toggleEditMode(taskItem);
 };
 
 /**
@@ -103,11 +117,9 @@ const bindTaskEvents = function (taskItem) {
 const addTask = function () {
   if (!newTaskInput.value) return;
 
-  const taskItem = createTaskItem(newTaskInput.value);
-  bindTaskEvents(taskItem);
-  todoList.appendChild(taskItem);
+  renderTask({ text: newTaskInput.value });
   newTaskInput.value = '';
 };
 
 addButton.addEventListener('click', addTask);
-[...todoList.children, ...completedList.children].forEach(bindTaskEvents);
+initialTasks.forEach(renderTask);
