@@ -32,7 +32,7 @@ const createElement = function (tagName, className, properties = {}) {
 
 /**
  * Builds a task item without event handlers (see bindTaskEvents).
- * The text goes through innerText, so special characters are not parsed as HTML.
+ * The text goes through textContent, so special characters are not parsed as HTML.
  * @param {string} taskText
  * @returns {HTMLLIElement}
  */
@@ -51,14 +51,14 @@ const createTaskItem = function (taskText) {
       type: 'checkbox',
       ariaLabel: 'Completed',
     }),
-    createElement('label', 'task-item__label', { innerText: taskText }),
+    createElement('label', 'task-item__label', { textContent: taskText }),
     createElement('input', 'task-item__edit-input', {
       type: 'text',
       ariaLabel: 'Task text',
     }),
     createElement('button', 'task-item__edit-button', {
       type: 'button',
-      innerText: 'Edit',
+      textContent: 'Edit',
     }),
     deleteButton,
   );
@@ -77,11 +77,11 @@ const toggleEditMode = function (taskItem) {
   const isEditing = taskItem.classList.contains('task-item--editing');
 
   if (isEditing) {
-    label.innerText = editInput.value;
+    label.textContent = editInput.value;
   } else {
-    editInput.value = label.innerText;
+    editInput.value = label.textContent;
   }
-  editButton.innerText = isEditing ? 'Edit' : 'Save';
+  editButton.textContent = isEditing ? 'Edit' : 'Save';
   taskItem.classList.toggle('task-item--editing');
 };
 
