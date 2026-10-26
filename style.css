@@ -40,7 +40,7 @@ ul {
   padding: 0px;
 }
 li,
-h3 {
+h2 {
   list-style: none;
 }
 input,
@@ -60,7 +60,7 @@ button:hover {
   color: #3a3a3a;
 }
 /* Heading */
-h3,
+h2,
 label[for='new-task'] {
   color: #333;
   font-weight: 700;
@@ -153,4 +153,17 @@ ul li.editMode input[type='text'] {
 
 ul li.editMode label {
   display: none;
+}
+
+/* Hidden visually, still available to screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
