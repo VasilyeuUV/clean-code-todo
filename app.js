@@ -1,3 +1,5 @@
+'use strict';
+
 /** @type {HTMLInputElement} Field with the text of a new task. */
 const newTaskInput = document.getElementById('new-task');
 
