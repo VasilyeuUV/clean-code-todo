@@ -38,6 +38,7 @@ const createElement = function (tagName, className, properties = {}) {
  */
 const createTaskItem = function (taskText) {
   const deleteButton = createElement('button', 'task-item__delete-button', {
+    type: 'button',
     ariaLabel: 'Delete task',
   });
   deleteButton.appendChild(
@@ -55,7 +56,10 @@ const createTaskItem = function (taskText) {
       type: 'text',
       ariaLabel: 'Task text',
     }),
-    createElement('button', 'task-item__edit-button', { innerText: 'Edit' }),
+    createElement('button', 'task-item__edit-button', {
+      type: 'button',
+      innerText: 'Edit',
+    }),
     deleteButton,
   );
   return taskItem;
