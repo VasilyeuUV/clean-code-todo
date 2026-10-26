@@ -1,8 +1,24 @@
+/* Variables */
+:root {
+  --color-background: #f8f8f8;
+  --color-text: #333;
+  --color-text-hover: #3a3a3a;
+  --color-muted: #888;
+  --color-surface: #fff;
+  --color-input-border: #ddd;
+  --color-divider: #eee;
+  --font-family-base: Lato, sans-serif;
+  --font-size-small: 15px;
+  --font-size-base: 18px;
+  --page-width: 500px;
+  --task-field-width: 226px;
+}
+
 /* Base */
 body {
-  background-color: #f8f8f8;
-  color: #333;
-  font-family: Lato, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family-base);
 }
 
 ul {
@@ -23,23 +39,23 @@ button {
 button {
   background: none;
   border: 0px;
-  color: #888;
-  font-size: 15px;
+  color: var(--color-muted);
+  font-size: var(--font-size-small);
   width: 60px;
-  font-family: Lato, sans-serif;
+  font-family: var(--font-family-base);
   cursor: pointer;
 }
 
 button:hover {
-  color: #3a3a3a;
+  color: var(--color-text-hover);
 }
 
 h2,
 label[for='new-task'] {
-  color: #333;
+  color: var(--color-text);
   font-weight: 700;
-  font-size: 15px;
-  border-bottom: 2px solid #333;
+  font-size: var(--font-size-small);
+  border-bottom: 2px solid var(--color-text);
   padding: 30px 0 10px;
   margin: 0;
   text-transform: uppercase;
@@ -47,19 +63,19 @@ label[for='new-task'] {
 
 input[type='text'] {
   margin: 0;
-  font-size: 18px;
+  font-size: var(--font-size-base);
   line-height: 18px;
   height: 21px;
   padding: 0 9px;
-  border: 1px solid #ddd;
-  background: #fff;
+  border: 1px solid var(--color-input-border);
+  background: var(--color-surface);
   border-radius: 6px;
-  font-family: Lato, sans-serif;
-  color: #888;
+  font-family: var(--font-family-base);
+  color: var(--color-muted);
 }
 
 input[type='text']:focus {
-  color: #333;
+  color: var(--color-text);
 }
 
 /* Shared: task text fields */
@@ -86,7 +102,7 @@ input[type='text']:focus {
 
 /* Block: page-header */
 .page-header {
-  width: 500px;
+  width: var(--page-width);
   margin: 0 auto;
   display: block;
   text-align: right;
@@ -109,7 +125,7 @@ input[type='text']:focus {
 /* Block: todo-app */
 .todo-app {
   display: block;
-  width: 500px;
+  width: var(--page-width);
   margin: 0 auto 0;
 }
 
@@ -135,7 +151,7 @@ input#new-task {
 li {
   overflow: hidden;
   padding: 20px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-divider);
 
   display: flex;
   justify-content: space-between;
@@ -153,12 +169,12 @@ li > input[type='checkbox'] {
 li > label {
   padding-left: 10px;
   box-sizing: border-box;
-  font-size: 18px;
-  width: 226px;
+  font-size: var(--font-size-base);
+  width: var(--task-field-width);
 }
 
 li > input[type='text'] {
-  width: 226px;
+  width: var(--task-field-width);
 }
 
 ul li input[type='text'] {
@@ -188,5 +204,5 @@ ul li.task-item--editing label {
 /* Block: task-item, context: completed list */
 ul#completed-list label {
   text-decoration: line-through;
-  color: #888;
+  color: var(--color-muted);
 }
