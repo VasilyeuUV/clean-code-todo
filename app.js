@@ -10,6 +10,12 @@ const todoList = document.getElementById('todo-list');
 /** @type {HTMLUListElement} Tasks that are done. */
 const completedList = document.getElementById('completed-list');
 
+/** Caption of the edit button while the task is shown as text. */
+const editCaption = 'Edit';
+
+/** Caption of the edit button while the task text is being edited. */
+const saveCaption = 'Save';
+
 /**
  * @typedef {Object} Task
  * @property {string} text
@@ -65,7 +71,7 @@ const createTaskItem = function (taskText) {
     }),
     createElement('button', 'task-item__edit-button', {
       type: 'button',
-      textContent: 'Edit',
+      textContent: editCaption,
     }),
     deleteButton,
   );
@@ -88,7 +94,7 @@ const toggleEditMode = function (taskItem) {
   } else {
     editInput.value = label.textContent;
   }
-  editButton.textContent = isEditing ? 'Edit' : 'Save';
+  editButton.textContent = isEditing ? editCaption : saveCaption;
   taskItem.classList.toggle('task-item--editing');
 };
 
