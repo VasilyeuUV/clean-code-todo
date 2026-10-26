@@ -20,9 +20,19 @@ style.css              стили
 app.js                 логика
 remove.svg             иконка кнопки удаления
 eisenhower-matrix.jpg  изображение в шапке
+eslint.config.js       настройки ESLint
+.prettierrc            настройки Prettier
+.husky/pre-commit      проверка кода перед коммитом (lint-staged)
 ```
 
-Сборщика и зависимостей нет. Чтобы запустить приложение, откройте `index.html` в браузере.
+Сборщик не нужен: чтобы запустить приложение, откройте `index.html` в браузере. Зависимости нужны только для проверок кода:
+
+```bash
+npm install        # зависимости и git-хуки
+npm run lint       # проверка ESLint
+npm run format     # проверка форматирования Prettier
+npm run format:fix # исправление форматирования
+```
 
 ## Чек-лист поведения
 
