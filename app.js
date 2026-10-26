@@ -46,7 +46,7 @@ const createElement = function (tagName, className, properties = {}) {
 };
 
 /**
- * Builds a task item without event handlers (see bindTaskEvents).
+ * Builds a task item.
  * The text goes through textContent, so special characters are not parsed as HTML.
  * @param {string} taskText
  * @returns {HTMLLIElement}
@@ -112,27 +112,34 @@ const placeTask = function (taskItem) {
 };
 
 /**
- * Attaches the checkbox, edit and delete handlers to a task item.
- * Call it once per item: a repeated call would add the handlers again.
- * @param {HTMLLIElement} taskItem
+ * Handles clicks on the edit and delete buttons of any task in a list.
+ * @param {MouseEvent} event
  */
-const bindTaskEvents = function (taskItem) {
-  const checkbox = taskItem.querySelector('.task-item__checkbox');
-  const editButton = taskItem.querySelector('.task-item__edit-button');
-  const deleteButton = taskItem.querySelector('.task-item__delete-button');
-
-  checkbox.addEventListener('change', () => placeTask(taskItem));
-  editButton.addEventListener('click', () => toggleEditMode(taskItem));
-  deleteButton.addEventListener('click', () => taskItem.remove());
+const handleListClick = function (event) {
+  const taskItem = event.target.closest('.task-item');
+  if (event.target.closest('.task-item__edit-button')) {
+    toggleEditMode(taskItem);
+  } else if (event.target.closest('.task-item__delete-button')) {
+    taskItem.remove();
+  }
 };
 
 /**
- * Creates a task, wires it up and shows it in the matching list and state.
+ * Moves a task to the matching list when its checkbox is toggled.
+ * @param {Event} event
+ */
+const handleListChange = function (event) {
+  if (event.target.matches('.task-item__checkbox')) {
+    placeTask(event.target.closest('.task-item'));
+  }
+};
+
+/**
+ * Creates a task and shows it in the matching list and state.
  * @param {Task} task
  */
 const renderTask = function ({ text, isCompleted = false, isEditing = false }) {
   const taskItem = createTaskItem(text);
-  bindTaskEvents(taskItem);
   taskItem.querySelector('.task-item__checkbox').checked = isCompleted;
   placeTask(taskItem);
   if (isEditing) toggleEditMode(taskItem);
@@ -149,4 +156,8 @@ const addTask = function () {
 };
 
 addButton.addEventListener('click', addTask);
+[todoList, completedList].forEach((list) => {
+  list.addEventListener('click', handleListClick);
+  list.addEventListener('change', handleListChange);
+});
 initialTasks.forEach(renderTask);
