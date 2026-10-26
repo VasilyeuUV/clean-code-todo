@@ -10,7 +10,14 @@ const todoList = document.getElementById('todo-list');
 /** @type {HTMLUListElement} Tasks that are done. */
 const completedList = document.getElementById('completed-list');
 
-/** @type {{text: string, isCompleted?: boolean, isEditing?: boolean}[]} Tasks shown on page load. */
+/**
+ * @typedef {Object} Task
+ * @property {string} text
+ * @property {boolean} [isCompleted] Starts in the completed list.
+ * @property {boolean} [isEditing] Starts in edit mode.
+ */
+
+/** @type {Task[]} Tasks shown on page load. */
 const initialTasks = [
   { text: 'Pay Bills' },
   { text: 'Go Shopping', isEditing: true },
@@ -113,7 +120,7 @@ const bindTaskEvents = function (taskItem) {
 
 /**
  * Creates a task, wires it up and shows it in the matching list and state.
- * @param {{text: string, isCompleted?: boolean, isEditing?: boolean}} task
+ * @param {Task} task
  */
 const renderTask = function ({ text, isCompleted = false, isEditing = false }) {
   const taskItem = createTaskItem(text);
