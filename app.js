@@ -37,16 +37,24 @@ const createElement = function (tagName, className, properties = {}) {
  * @returns {HTMLLIElement}
  */
 const createTaskItem = function (taskText) {
-  const deleteButton = createElement('button', 'task-item__delete-button');
+  const deleteButton = createElement('button', 'task-item__delete-button', {
+    ariaLabel: 'Delete task',
+  });
   deleteButton.appendChild(
     createElement('img', '', { src: './remove.svg', alt: '' }),
   );
 
   const taskItem = createElement('li', 'task-item');
   taskItem.append(
-    createElement('input', 'task-item__checkbox', { type: 'checkbox' }),
+    createElement('input', 'task-item__checkbox', {
+      type: 'checkbox',
+      ariaLabel: 'Completed',
+    }),
     createElement('label', 'task-item__label', { innerText: taskText }),
-    createElement('input', 'task-item__edit-input', { type: 'text' }),
+    createElement('input', 'task-item__edit-input', {
+      type: 'text',
+      ariaLabel: 'Task text',
+    }),
     createElement('button', 'task-item__edit-button', { innerText: 'Edit' }),
     deleteButton,
   );
