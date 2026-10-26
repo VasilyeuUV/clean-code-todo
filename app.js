@@ -1,24 +1,34 @@
-//Document is the DOM can be accessed in the console with document.window.
-// Tree is from the top, html, body, p etc.
+/** @type {HTMLInputElement} Field with the text of a new task. */
+const newTaskInput = document.getElementById('new-task');
 
-//Problem: User interaction does not provide the correct results.
-//Solution: Add interactivity so the user can manage daily tasks.
-//Break things down into smaller steps and take each step at a time.
-
-// Event handling, user interaction is what starts the code execution.
-
-const newTaskInput = document.getElementById('new-task'); //Add a new task.
+/** @type {HTMLButtonElement} Button that adds the typed task to the todo list. */
 const addButton = document.querySelector('.add-task__button');
-const todoList = document.getElementById('todo-list'); //ul of #todo-list
-const completedList = document.getElementById('completed-list'); //completed-list
 
+/** @type {HTMLUListElement} Tasks that are not done yet. */
+const todoList = document.getElementById('todo-list');
+
+/** @type {HTMLUListElement} Tasks that are done. */
+const completedList = document.getElementById('completed-list');
+
+/**
+ * Creates an element with the given class and extra properties.
+ * @param {string} tagName
+ * @param {string} [className] Not set when empty.
+ * @param {Object} [properties] Assigned to the element as is.
+ * @returns {HTMLElement}
+ */
 const createElement = function (tagName, className, properties = {}) {
   const element = document.createElement(tagName);
   if (className) element.className = className;
   return Object.assign(element, properties);
 };
 
-//New task list item
+/**
+ * Builds a task item without event handlers (see bindTaskEvents).
+ * The text goes through innerText, so special characters are not parsed as HTML.
+ * @param {string} taskText
+ * @returns {HTMLLIElement}
+ */
 const createTaskItem = function (taskText) {
   const deleteButton = createElement('button', 'task-item__delete-button');
   deleteButton.appendChild(createElement('img', '', { src: './remove.svg' }));
@@ -26,7 +36,6 @@ const createTaskItem = function (taskText) {
   const taskItem = createElement('li', 'task-item');
   taskItem.append(
     createElement('input', 'task-item__checkbox', { type: 'checkbox' }),
-    //innerText encodes special characters, HTML does not.
     createElement('label', 'task-item__label', { innerText: taskText }),
     createElement('input', 'task-item__edit-input', { type: 'text' }),
     createElement('button', 'task-item__edit-button', { innerText: 'Edit' }),
@@ -35,7 +44,11 @@ const createTaskItem = function (taskText) {
   return taskItem;
 };
 
-//Edit an existing task.
+/**
+ * Switches a task between viewing and editing: the text is copied between the
+ * label and the edit field, and the button caption between "Edit" and "Save".
+ * @this {HTMLButtonElement} Edit button of the task.
+ */
 const toggleEditMode = function () {
   const taskItem = this.parentNode;
   const label = taskItem.querySelector('.task-item__label');
@@ -51,18 +64,28 @@ const toggleEditMode = function () {
   taskItem.classList.toggle('task-item--editing');
 };
 
-//Delete task.
+/**
+ * Removes the task from its list.
+ * @this {HTMLButtonElement} Delete button of the task.
+ */
 const deleteTask = function () {
   this.parentNode.remove();
 };
 
-//Move the task to #completed-list when the checkbox is checked,
-//and back to #todo-list when it is unchecked.
+/**
+ * Moves the task to the completed list when its checkbox is checked and back
+ * to the todo list when it is unchecked.
+ * @this {HTMLInputElement} Checkbox of the task.
+ */
 const toggleTaskCompletion = function () {
   const targetList = this.checked ? completedList : todoList;
   targetList.appendChild(this.parentNode);
 };
 
+/**
+ * Attaches the checkbox, edit and delete handlers to a task item.
+ * @param {HTMLLIElement} taskItem
+ */
 const bindTaskEvents = function (taskItem) {
   const checkbox = taskItem.querySelector('.task-item__checkbox');
   const editButton = taskItem.querySelector('.task-item__edit-button');
@@ -73,6 +96,9 @@ const bindTaskEvents = function (taskItem) {
   deleteButton.onclick = deleteTask;
 };
 
+/**
+ * Adds a task with the typed text to the todo list. Empty text is ignored.
+ */
 const addTask = function () {
   if (!newTaskInput.value) return;
 
@@ -82,6 +108,5 @@ const addTask = function () {
   newTaskInput.value = '';
 };
 
-//The glue to hold it all together.
 addButton.onclick = addTask;
 [...todoList.children, ...completedList.children].forEach(bindTaskEvents);
